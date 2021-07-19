@@ -14,24 +14,29 @@ program.version(version) // This is required is you wish to support the --versio
 
 inquirer.registerPrompt('autocomplete', require('inquirer-autocomplete-prompt'))
 
-const chooseRegions = async regions => {
+const chooseRegions = async (cloud, regions) => {
 	const { region } = await inquirer.prompt([
 		{ 
 			type: 'autocomplete', 
 			name: 'region', 
-			message: 'Select a region:',
+			message: `Search ${cloud} regions:`,
 			pageSize: 20,
 			source: function(answersSoFar, input) {
 				if (input) 
-					return regions.filter(r => `${r.code} - ${r.name}`.toLowerCase().indexOf(input.toLowerCase()) >= 0).map(r => ({
-						name: `${r.code} - ${r.name}`,
-						value:r.code
-					}))
+					return regions
+						.filter(r => `${r.code} - ${r.name}`.toLowerCase().indexOf(input.toLowerCase()) >= 0)
+						.map(r => ({
+							name: `${r.code} - ${r.name}`,
+							value:r.code
+						}))
+						.sort((a,b) => a.value > b.value ? 1 : -1)
 				else
-					return regions.map(r => ({
-						name: `${r.code} - ${r.name}`,
-						value:r.code
-					}))
+					return regions
+						.map(r => ({
+							name: `${r.code} - ${r.name}`,
+							value:r.code
+						}))
+						.sort((a,b) => a.value > b.value ? 1 : -1)
 			}
 		}
 	])
@@ -43,18 +48,25 @@ const chooseRegions = async regions => {
 // called 'product' and an optional argument called 'option'.
 program
 	.command('select')
+	.option('-a, --aws', 'Only list AWS regions')
+	.option('-g, --gcp', 'Only list GCP regions')
 	.description('Default behavior. List the existing regions for either AWS or Google Cloud. Equivalent to `npx get-regions`') // Optional description
-	.action(async () => {
-		const { cloud } = await inquirer.prompt([{
-			type: 'list',
-			name: 'cloud',
-			message: 'Select a Cloud provider: ',
-			pageSize: 2,
-			choices:['AWS', 'GCP (Google Cloud Platform)']
-		}])
+	.action(async options => {
+		const { aws, gcp } = options||{}
+		let cloud = aws ? 'AWS' : gcp ? 'GCP' : null
+		if (!cloud) {
+			const resp = await inquirer.prompt([{
+				type: 'list',
+				name: 'cloud',
+				message: 'Select a Cloud provider: ',
+				pageSize: 2,
+				choices:['AWS', 'GCP']
+			}])
+			cloud = resp.cloud
+		}
 
 		const regions = cloud == 'AWS' ? awsRegions : gcpRegions
-		const region = await chooseRegions(regions)
+		const region = await chooseRegions(cloud, regions)
 
 		clipboardy.writeSync(region)
 
@@ -62,11 +74,21 @@ program
 	})
 
 // 2. Deals with cases where no command is passed.
+const cmdArgs = [process.argv[0], process.argv[1]]
 if (process.argv.length == 2)
-	process.argv.push('select')
+	cmdArgs.push('select')
+else if (process.argv.length > 2) {
+	const thirdArg = (process.argv[2]||'').toLowerCase().trim()
+	if (thirdArg == 'aws' || thirdArg == '--aws' || thirdArg == '-a')
+		cmdArgs.push('select', '--aws')
+	else if (thirdArg == 'gcp' || thirdArg == '--gcp' || thirdArg == '-g')
+		cmdArgs.push('select', '--gcp')
+	else
+		cmdArgs.push(process.argv[2], process.argv[3])
+}
 
 // 3. Starts the commander program
-program.parse(process.argv) 
+program.parse(cmdArgs) 
 
 
 

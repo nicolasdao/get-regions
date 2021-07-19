@@ -1,6 +1,6 @@
 {
   "name": "get-regions",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "index.js",
   "bin": "index.js",
   "description": "NPX script that lists/searches the code names for all the AWS and GCP (Google Cloud Platform) regions and copy the selected one to the clipboard.",

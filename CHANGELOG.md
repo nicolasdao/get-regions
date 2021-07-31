@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/nicolasdao/get-regions/compare/v0.0.3...v1.0.0) (2021-07-31)
+
+
+### Features
+
+* Add support for availibility zones ([0d404ca](https://github.com/nicolasdao/get-regions/commit/0d404caa6f8a58461e0efa4cfc3861e543120dfd))
+
 ### [0.0.3](https://github.com/nicolasdao/get-regions/compare/v0.0.2...v0.0.3) (2021-07-19)
 
 

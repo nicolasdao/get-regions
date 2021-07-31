@@ -19,24 +19,24 @@ const chooseRegions = async (cloud, regions) => {
 		{ 
 			type: 'autocomplete', 
 			name: 'region', 
-			message: `Search ${cloud} regions:`,
+			message: `Search ${cloud} availability zones & regions:`,
 			pageSize: 20,
 			source: function(answersSoFar, input) {
 				if (input) 
 					return regions
-						.filter(r => `${r.code} - ${r.name}`.toLowerCase().indexOf(input.toLowerCase()) >= 0)
+						.filter(r => `${r.az} (az) - ${r.region} (region): ${r.name}`.toLowerCase().indexOf(input.toLowerCase()) >= 0)
 						.map(r => ({
-							name: `${r.code} - ${r.name}`,
-							value:r.code
+							name: `${r.az} (az) - ${r.region} (region): ${r.name}`,
+							value:r
 						}))
 						.sort((a,b) => a.value > b.value ? 1 : -1)
 				else
 					return regions
 						.map(r => ({
-							name: `${r.code} - ${r.name}`,
-							value:r.code
+							name: `${r.az} (az) - ${r.region} (region): ${r.name}`,
+							value:r
 						}))
-						.sort((a,b) => a.value > b.value ? 1 : -1)
+						.sort((a,b) => a.value.az > b.value.az ? 1 : -1)
 			}
 		}
 	])
@@ -68,9 +68,9 @@ program
 		const regions = cloud == 'AWS' ? awsRegions : gcpRegions
 		const region = await chooseRegions(cloud, regions)
 
-		clipboardy.writeSync(region)
+		clipboardy.writeSync(region.region)
 
-		console.log(`${region.bold} copied to your clipboard`.green)
+		console.log(`${region.region.bold} copied to your clipboard`.green)
 	})
 
 // 2. Deals with cases where no command is passed.

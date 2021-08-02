@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/nicolasdao/get-regions/compare/v1.0.1...v1.1.0) (2021-08-02)
+
+
+### Features
+
+* Refactor the regions and azs DB outside of this project (to Gist) so it can be updated independantly ([1e50a68](https://github.com/nicolasdao/get-regions/commit/1e50a683c4a3fe34fdd1c70af832382afe4e89c6))
+
 ### [1.0.1](https://github.com/nicolasdao/get-regions/compare/v1.0.0...v1.0.1) (2021-07-31)
 
 ## [1.0.0](https://github.com/nicolasdao/get-regions/compare/v0.0.3...v1.0.0) (2021-07-31)

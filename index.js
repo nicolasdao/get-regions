@@ -28,7 +28,7 @@ const chooseRegions = async (cloud, regions) => {
 							name: `${r.az} (az) - ${r.region} (region): ${r.name}`,
 							value:r
 						}))
-						.sort((a,b) => a.value > b.value ? 1 : -1)
+						.sort((a,b) => a.value.az > b.value.az ? 1 : -1)
 				else
 					return regions
 						.map(r => ({

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/nicolasdao/get-regions/compare/v1.1.0...v1.1.1) (2021-08-02)
+
+
+### Bug Fixes
+
+* The list is not ordered by AZs ([1bca645](https://github.com/nicolasdao/get-regions/commit/1bca64564053701dfc543595d8cd43f75f079f32))
+
 ## [1.1.0](https://github.com/nicolasdao/get-regions/compare/v1.0.1...v1.1.0) (2021-08-02)
 
 

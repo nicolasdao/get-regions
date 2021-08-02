@@ -6,8 +6,7 @@
 const program = require('commander')
 const inquirer = require('inquirer')
 const clipboardy = require('clipboardy')
-const awsRegions = require('./src/aws/regions')
-const gcpRegions = require('./src/gcp/regions')
+const { awsRegions, gcpRegions } = require('./src')
 require('colors')
 const { version } = require('./package.json')
 program.version(version) // This is required is you wish to support the --version option.
@@ -65,7 +64,7 @@ program
 			cloud = resp.cloud
 		}
 
-		const regions = cloud == 'AWS' ? awsRegions : gcpRegions
+		const regions = await (cloud == 'AWS' ? awsRegions : gcpRegions)
 		const region = await chooseRegions(cloud, regions)
 
 		clipboardy.writeSync(region.region)
